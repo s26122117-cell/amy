@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Y2K Korean Cyber Cute Portfolio ✨</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Korean Y2K Vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=DotGothic16&family=Noto+Sans+TC:wght@400;700;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --y2k-pink: #ff85cb;
+            --y2k-purple: #b388ff;
+            --y2k-cyan: #80d8ff;
+            --y2k-silver: #e2e8f0;
+            --y2k-bg-dark: #120b29;
+            --y2k-card-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background-color: var(--y2k-bg-dark);
+            /* Cyber Grid + Metallic Soft Hologram Radial Gradient Background */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 133, 203, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(128, 216, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(179, 136, 255, 0.18) 0%, transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Y2K Retro Font Classes */
+        .font-cute {
+            font-family: 'Cherry Bomb One', cursive, 'Noto Sans TC', sans-serif;
+        }
+
+        .font-pixel {
+            font-family: 'DotGothic16', monospace;
+        }
+
+        /* Scanlines Overlay effect for visual polish */
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.5;
+        }
+
+        /* Korean Y2K Holographic Shiny Border Card */
+        .y2k-glass-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 8px 32px 0 rgba(179, 136, 255, 0.3),
+                inset 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Holographic Animated Text Gradient */
+        .holo-text {
+            background: linear-gradient(
+                90deg, 
+                #ff85cb, #80d8ff, #ffffff, #b388ff, #ff85cb
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: holoFlow 4s linear infinite;
+        }
+
+        @keyframes holoFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Floating Badge Animation */
+        .floating-badge {
+            animation: floatAnim 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatAnim {
+            0% { transform: translateY(0px) rotate(-3deg); }
+            100% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        /* Korean Style Sticker Tag */
+        .y2k-sticker {
+            background: linear-gradient(135deg, #ffffff 0%, #f0e6ff 100%);
+            color: #222;
+            box-shadow: 3px 3px 0px #ff85cb, 5px 5px 10px rgba(0,0,0,0.3);
+            border: 2px solid #222;
+            transform: rotate(-2deg);
+            transition: all 0.2s ease;
+        }
+
+        .y2k-sticker:hover {
+            transform: rotate(2deg) scale(1.05);
+        }
+
+        /* UNLOCKED BUTTON STYLING & HOVER ANIMATION */
+        .btn-unlocked {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 15px rgba(255, 133, 203, 0.3), 0 0 0 2px rgba(255, 133, 203, 0.4);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-unlocked::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.6) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg) translateY(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-unlocked:hover::before {
+            transform: rotate(45deg) translateY(100%);
+        }
+
+        .btn-unlocked:hover {
+            transform: translateY(-6px) scale(1.03);
+            border-color: #ffffff;
+            background: linear-gradient(135deg, rgba(255, 133, 203, 0.4) 0%, rgba(128, 216, 255, 0.4) 100%);
+            box-shadow: 
+                0 12px 25px rgba(255, 133, 203, 0.5),
+                0 0 20px rgba(128, 216, 255, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-unlocked:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* LOCKED BUTTON STYLING & HOVER ANIMATION */
+        .btn-locked {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px dashed rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
+            cursor: not-allowed;
+            transition: all 0.2s ease;
+        }
+
+        .btn-locked:hover {
+            border-color: #ff85cb;
+            color: rgba(255, 133, 203, 0.8);
+            background: rgba(255, 133, 203, 0.08);
+            animation: lockShake 0.3s ease-in-out;
+            box-shadow: 0 0 12px rgba(255, 133, 203, 0.2);
+        }
+
+        @keyframes lockShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-1deg); }
+            75% { transform: translateX(4px) rotate(1deg); }
+        }
+
+        /* Cute Rotating Avatar Border Effect */
+        .avatar-ring {
+            position: relative;
+        }
+
+        .avatar-ring::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 9999px;
+            background: conic-gradient(#ff85cb, #80d8ff, #b388ff, #ffffff, #ff85cb);
+            animation: spinRing 6s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes spinRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between items-center min-h-screen p-4 md:p-8 relative">
+
+    <!-- Scanline Visual Overlay -->
+    <div class="scanline-overlay"></div>
+
+    <header class="w-full max-w-5xl mb-6 z-10">
+        <div class="y2k-glass-card rounded-2xl p-2.5 flex justify-between items-center text-xs md:text-sm font-pixel">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-3 h-3 rounded-full bg-pink-400 animate-ping"></span>
+                <span class="text-pink-300 font-bold">✨ STUDIO_Y2K.v2000</span>
+            </div>
+            <div class="hidden sm:flex items-center gap-3 text-cyan-200">
+                <span>SYSTEM: ONLINE</span>
+                <span>•</span>
+                <span>MODE: K-CYBER CUTE</span>
+            </div>
+            <div class="flex gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-full bg-pink-400/80 inline-block"></span>
+                <span class="w-3.5 h-3.5 rounded-full bg-purple-400/80 inline-block"></span>
+                <span class="w-3.5 h-3.5 rounded-full bg-cyan-400/80 inline-block"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-5xl flex flex-col items-center z-10">
+        
+        <!-- Center Profile Hero Box -->
+        <section class="y2k-glass-card w-full max-w-2xl rounded-3xl p-6 md:p-8 text-center relative mb-12 overflow-hidden">
+            
+            <!-- Decorative Floating Stickers -->
+            <div class="absolute -top-1 -left-1 y2k-sticker px-3 py-1 text-xs font-black rounded-full floating-badge z-20">
+                💖 K-Y2K VIBE
+            </div>
+            <div class="absolute top-4 right-4 y2k-sticker px-3 py-1 text-xs font-black rounded-full floating-badge z-20" style="animation-delay: 1.5s;">
+                ✨ LEVEL 01
+            </div>
+
+            <!-- Avatar Container -->
+            <div class="my-3 relative flex justify-center items-center">
+                <div class="avatar-ring p-1 rounded-full">
+                    <!-- Korean Y2K Preset Cute Avatar Image -->
+                    <img 
+                        src="https://picsum.photos/id/64/200/200" 
+                        alt="My Profile Avatar" 
+                        class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover relative z-10 border-4 border-white shadow-2xl"
+                        onerror="this.src='https://placehold.co/200x200/ff85cb/ffffff?text=Y2K+ME'"
+                    />
+                </div>
+            </div>
+
+            <!-- Profile Name & Title -->
+            <h1 class="text-3xl md:text-5xl font-black holo-text tracking-wider mb-2 font-cute drop-shadow-md">
+                STUDIO Y2K
+            </h1>
+            
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <span class="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-xs md:text-sm px-4 py-1 rounded-full shadow-md border border-white/50">
+                    💿 網頁程式作品集 PORTFOLIO
+                </span>
+            </div>
+
+            <p class="text-purple-100 text-xs md:text-sm max-w-md mx-auto font-medium leading-relaxed">
+                Welcome to my Cyber Quest World! 進入千禧復古可愛數位空間，展開 16 週的網頁開發冒險之旅✨
+            </p>
+
+            <!-- Mission Status Bar -->
+            <div class="mt-6 pt-4 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-purple-200">
+                <span class="font-pixel flex items-center gap-1">
+                    <span class="text-pink-300">PROGRESS:</span> QUEST UNLOCKED
+                </span>
+                <div class="w-full sm:w-1/2 bg-black/40 rounded-full h-3.5 p-0.5 border border-white/30 relative">
+                    <div class="bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-300 h-full rounded-full w-[12.5%] shadow-sm"></div>
+                </div>
+                <span class="font-bold text-pink-300 font-pixel">2 / 16 STAGES</span>
+            </div>
+        </section>
+
+        <!-- Mission Buttons Section -->
+        <section class="w-full">
+            <div class="flex items-center justify-between mb-6 px-2">
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2 font-cute tracking-wide">
+                    <span class="text-pink-400 text-2xl">✨</span> LESSON STAGES
+                </h2>
+                <span class="text-xs font-pixel text-cyan-200 bg-white/10 backdrop-blur px-3 py-1 rounded-full border border-white/30">
+                    SELECT MISSION ➔
+                </span>
+            </div>
+
+            <!-- 16 Grid Buttons Container (4x4 on Desktop, 2x2 on Mobile) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                
+                <!-- BUTTON 1: Unlocked (Week 1) -->
+                <a href="w1/index.html" class="btn-unlocked p-4 rounded-2xl flex flex-col justify-between min-h-[120px] group">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-pixel text-[11px] px-2.5 py-0.5 rounded-full border border-white/50 shadow">
+                            STAGE 01
+                        </span>
+                        <span class="text-pink-300 text-xs font-bold tracking-widest group-hover:translate-x-1 transition-transform">
+                            PLAY ➔
+                        </span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="text-white font-bold text-base md:text-lg group-hover:text-pink-200 transition-colors">
+                            Week 1 - 數位名片
+                        </h3>
+                        <p class="text-cyan-200 text-xs mt-1 flex items-center gap-1 font-medium">
+                            <span>✨</span> 已解鎖任務
+                        </p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 2: Unlocked (Week 2) -->
+                <a href="w2/index.html" class="btn-unlocked p-4 rounded-2xl flex flex-col justify-between min-h-[120px] group">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-pixel text-[11px] px-2.5 py-0.5 rounded-full border border-white/50 shadow">
+                            STAGE 02
+                        </span>
+                        <span class="text-cyan-300 text-xs font-bold tracking-widest group-hover:translate-x-1 transition-transform">
+                            PLAY ➔
+                        </span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="text-white font-bold text-base md:text-lg group-hover:text-cyan-200 transition-colors">
+                            Week 2 - 今天吃甚麼?
+                        </h3>
+                        <p class="text-cyan-200 text-xs mt-1 flex items-center gap-1 font-medium">
+                            <span>✨</span> 已解鎖任務
+                        </p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 3: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 03
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 3 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 4: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 04
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 4 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 5: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 05
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 5 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 6: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 06
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 6 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 7: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 07
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 7 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 8: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 08
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 8 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 9: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 09
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 9 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 10: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 10
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 10 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 11: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 11
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 11 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 12: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 12
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 12 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 13: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 13
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 13 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 14: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 14
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 14 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 15: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 15
+                        </span>
+                        <span class="text-base">🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 15 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">LOCKED QUEST</p>
+                    </div>
+                </a>
+
+                <!-- BUTTON 16: Locked -->
+                <a href="javascript:void(0)" class="btn-locked p-4 rounded-2xl flex flex-col justify-between min-h-[120px]">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-white/10 text-gray-400 font-pixel text-[10px] px-2 py-0.5 rounded-full border border-white/10">
+                            STAGE 16
+                        </span>
+                        <span class="text-base">👑🔒</span>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-bold text-sm md:text-base">Week 16 - 未解鎖</h3>
+                        <p class="text-gray-400 text-xs mt-1">FINAL BOSS</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="w-full max-w-5xl mt-12 text-center z-10">
+        <div class="y2k-glass-card rounded-2xl p-4 text-xs font-medium text-purple-200 flex flex-col md:flex-row justify-between items-center gap-2">
+            <div>
