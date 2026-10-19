@@ -133,3 +133,321 @@
       column-gap: 1.5rem;       /* 欄位之間的間距 */
       display: none;            /* 載入完成前先隱藏 */
     }
+
+    /* RWD 響應式斷點調整 */
+    @media (max-width: 1100px) { .masonry-wall { column-count: 3; } }
+    @media (max-width: 768px)  { .masonry-wall { column-count: 2; } }
+    @media (max-width: 480px)  { .masonry-wall { column-count: 1; } }
+
+    /* ==========================================================================
+       【4. 留言卡片樣式與 3 秒輪播 Highlight 特效】
+       ========================================================================== */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      /* 防裁切關鍵：避免卡片在多欄分割時被切斷 */
+      break-inside: avoid;
+      
+      /* 動畫轉場 */
+      transition: all var(--transition-speed) ease;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 卡片頭部 (名字與時間) */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-author {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--pink-soft);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .card-time {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+    }
+
+    /* 卡片留言內容 */
+    .card-body {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-wrap;    /* 保留原始留言的換行 */
+      word-break: break-word;   /* 自動斷詞防爆版 */
+    }
+
+    /* --- 【焦點輪播卡片 (Highlight)】 --- */
+    .card.highlight {
+      transform: scale(1.08);                 /* 放大卡片 */
+      border-color: var(--pink-primary);      /* 亮粉色邊框 */
+      background-color: #1a0d16;              /* 微暗粉底色 */
+      
+      /* 霓虹粉紅強烈外發光特效 */
+      box-shadow: 0 0 25px rgba(var(--pink-glow-rgb), 0.8),
+                  0 0 10px rgba(var(--pink-glow-rgb), 0.5);
+      z-index: 10;                             /* 提升至最上層 */
+    }
+
+    /* --- 【未被選中的卡片 (暗化 + 模糊)】 --- */
+    .masonry-wall.has-active .card:not(.highlight) {
+      opacity: 0.35;               /* 降低透明度 */
+      filter: blur(2px) grayscale(20%); /* 變模糊與微灰階 */
+      transform: scale(0.96);      /* 稍微縮小 */
+    }
+
+    /* 滑鼠懸停時允許使用者清晰檢視卡片 */
+    .card:hover {
+      opacity: 1 !important;
+      filter: blur(0px) grayscale(0%) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 標題區 -->
+  <header>
+    <h1>MESSAGES WALL</h1>
+    <p>✦ 朋友對我的動態留言板 ✦</p>
+  </header>
+
+  <!-- 1. 載入中酷炫動畫 -->
+  <div id="loading-container">
+    <div class="neon-spinner"></div>
+    <div class="loading-text">讀取留言中...</div>
+  </div>
+
+  <!-- 2. 瀑布流留言牆容器 -->
+  <div id="wall" class="masonry-wall"></div>
+
+  <script>
+    // ==========================================================================
+    //  【控制參數設定區】
+    // ==========================================================================
+    
+    // 更新後的 Google 試算表 CSV 發佈網址
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR4Dh3QZPFofqSMZNfUWfGOJhBvJOQnXrdUvJRurIeTgcniHtL3JudZcKuextaUo-GV9x0s8lCcNLYQ/pub?output=csv';
+
+    // 【輪播秒數控制區】設定每隔幾毫秒切換高亮卡片 (3000ms = 3 秒)
+    const CAROUSEL_INTERVAL_MS = 3000; 
+
+    // 全局變數
+    let messagesData = [];    // 儲存解析後的 CSV 留言資料
+    let cardElements = [];    // 儲存 DOM 卡片元件
+    let currentIndex = 0;     // 當前高亮的卡片索引
+    let carouselTimer = null; // 輪播計時器
+
+    // ==========================================================================
+    //  【1. 初始化與 Fetch 讀取資料】
+    // ==========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchGoogleSheetData();
+    });
+
+    async function fetchGoogleSheetData() {
+      try {
+        const response = await fetch(CSV_URL);
+        if (!response.ok) throw new Error('無法連線至 Google 試算表');
+
+        const csvText = await response.text();
+        
+        // 解析 CSV 資料
+        messagesData = parseCSV(csvText);
+
+        // 隱藏 Loading 動畫，顯示瀑布流牆
+        document.getElementById('loading-container').style.display = 'none';
+        const wall = document.getElementById('wall');
+        wall.style.display = 'block';
+
+        // 動態生成卡片
+        renderCards(messagesData);
+
+        // 資料載入完成後啟動 3 秒輪播特效
+        if (cardElements.length > 0) {
+          startCarousel();
+        }
+
+      } catch (error) {
+        console.error('資料載入失敗:', error);
+        document.getElementById('loading-container').innerHTML = `
+          <div style="color: var(--pink-primary); font-size: 1.1rem;">
+            ✕ 載入失敗，請檢查網路連線或試算表網址。
+          </div>
+        `;
+      }
+    }
+
+    // ==========================================================================
+    //  【2. 完整 CSV 解析器】(可正確處理雙引號、換行與留言內的逗號)
+    // ==========================================================================
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentField = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            // 處理轉義雙引號 ("")
+            currentField += '"';
+            i++;
+          } else {
+            // 切換引號包覆狀態
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          // 遇到逗號且不在引號內 -> 欄位分隔
+          currentRow.push(currentField.trim());
+          currentField = '';
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+          // 遇到換行且不在引號內 -> 列分隔
+          if (char === '\r' && nextChar === '\n') i++; // 處理 CRLF
+          currentRow.push(currentField.trim());
+          if (currentRow.length > 1 || currentRow[0] !== '') {
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentField = '';
+        } else {
+          currentField += char;
+        }
+      }
+
+      if (currentField || currentRow.length > 0) {
+        currentRow.push(currentField.trim());
+        rows.push(currentRow);
+      }
+
+      // 跳過表頭 (欄位標題：時間戳記、名字、悄悄話)
+      const dataRows = rows.slice(1);
+
+      // 轉換成 JSON 物件陣列 (欄位順序預設：0:時間, 1:名字, 2:悄悄話)
+      return dataRows.map(row => ({
+        timestamp: row[0] || '',
+        name: row[1] || '秘密朋友',
+        message: row[2] || ''
+      })).filter(item => item.name || item.message); // 過濾完全空白列
+    }
+
+    // ==========================================================================
+    //  【3. 動態渲染 DOM 留言卡片】
+    // ==========================================================================
+    function renderCards(data) {
+      const wall = document.getElementById('wall');
+      wall.innerHTML = '';
+      cardElements = [];
+
+      data.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        // 簡化時間格式顯示
+        const displayTime = formatTime(item.timestamp);
+
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="card-author">✦ ${escapeHTML(item.name)}</span>
+            <span class="card-time">${escapeHTML(displayTime)}</span>
+          </div>
+          <div class="card-body">${escapeHTML(item.message)}</div>
+        `;
+
+        // 點擊卡片時可手動切換至該卡片高亮
+        card.addEventListener('click', () => {
+          currentIndex = index;
+          highlightCard(currentIndex);
+          resetCarouselTimer(); // 重置 3 秒計時器
+        });
+
+        wall.appendChild(card);
+        cardElements.push(card);
+      });
+    }
+
+    // ==========================================================================
+    //  【4. 3 秒輪播 Highlight 特效邏輯】
+    // ==========================================================================
+    
+    // 開啟計時器
+    function startCarousel() {
+      // 點亮初始第一張卡片
+      highlightCard(currentIndex);
+
+      // 設定 setInterval 每隔 CAROUSEL_INTERVAL_MS (3000ms) 循環一次
+      carouselTimer = setInterval(() => {
+        currentIndex = (currentIndex + 1) % cardElements.length;
+        highlightCard(currentIndex);
+      }, CAROUSEL_INTERVAL_MS);
+    }
+
+    // 將指定索引卡片放大亮起，其他卡片模糊變暗
+    function highlightCard(index) {
+      const wall = document.getElementById('wall');
+      
+      // 為 wall 加上 has-active class，供 CSS 控制其他卡片的暗化與模糊
+      wall.classList.add('has-active');
+
+      cardElements.forEach((card, i) => {
+        if (i === index) {
+          card.classList.add('highlight');
+          
+          // 平滑滾動讓高亮卡片維持在視野範圍內
+          card.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+          });
+        } else {
+          card.classList.remove('highlight');
+        }
+      });
+    }
+
+    // 使用者手動點擊卡片時，重新計算 3 秒計時器
+    function resetCarouselTimer() {
+      if (carouselTimer) {
+        clearInterval(carouselTimer);
+        startCarousel();
+      }
+    }
+
+    // ==========================================================================
+    //  【5. 工具函式 (防 XSS 攻擊與時間格式簡化)】
+    // ==========================================================================
+    
+    // HTML 安全轉義 (防止惡意 Script 注入)
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // 簡化時間格式 (移除秒數)
+    function formatTime(ts) {
+      if (!ts) return '';
+      return ts.replace(/:\d{2}\$/, '');
+    }
+  </script>
+</body>
+</html>
